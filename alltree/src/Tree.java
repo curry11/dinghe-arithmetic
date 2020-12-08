@@ -60,6 +60,7 @@ public class Tree {
         if (node == null)
             return;
         System.out.print(node.data);
+        System.out.print(" ");
         preOrderRecursion(node.LeftNode);
         preOrderRecursion(node.RightNode);
     }
@@ -74,13 +75,14 @@ public class Tree {
         if(node == null)
             return;
         System.out.println();
-        while(node != null || Queue.getTop()!=0){
+        while(node != null || Inn.getTop()!=0){  //节点不为空 或者栈顶不为0
            if(node != null){
                 System.out.print(node.data);
-                Queue.push(node);
+                System.out.print(" ");
+                Inn.push(node); //入栈
                 node = node.LeftNode;
             }else {
-                Node temp = Queue.pop();
+                Node temp = Inn.pop();//出栈
                 node = temp.RightNode;
             }
         }
@@ -92,6 +94,7 @@ public class Tree {
             return;
         inOrderRecursion(node.LeftNode);
         System.out.print(node.data);
+        System.out.print(" ");
         inOrderRecursion(node.RightNode);
     }
 
@@ -105,13 +108,14 @@ public class Tree {
         if(node == null)
             return;
         System.out.println();
-        while(node != null || Queue.getTop()!=0){
+        while(node != null || Inn.getTop()!=0){   //节点不为空 或者栈顶不为0
             if(node != null){
-                Queue.push(node);
+                Inn.push(node);  //入栈
                 node = node.LeftNode;
             }else {
-                Node temp = Queue.pop();
+                Node temp = Inn.pop(); //出栈
                 System.out.print(temp.data);
+                System.out.print(" ");
                 node = temp.RightNode;
             }
         }
@@ -124,6 +128,7 @@ public class Tree {
         postOrderRecursion(node.LeftNode);
         postOrderRecursion(node.RightNode);
         System.out.print(node.data);
+        System.out.print(" ");
     }
 
     //后序遍历 非递归  先访问左子树，右子树 根节点
@@ -136,22 +141,24 @@ public class Tree {
         if (node == null)
             return;
         System.out.println();
-        Queue.push(node);
+        Inn.push(node);
 
         Node preNode = null;
 
-        while (Queue.getTop() != 0){
-            Node curNode = Queue.getNode();
-            if(curNode.RightNode == null && curNode.LeftNode == null || (preNode != null && (curNode.LeftNode == preNode || curNode.RightNode == preNode))){
-                Node node1 = Queue.pop();
+        while (Inn.getTop() != 0){     //栈顶不为0
+            Node curNode = Inn.getNode();
+            if(curNode.RightNode == null && curNode.LeftNode == null ||    //左右节点为空
+                    (preNode != null && (curNode.LeftNode == preNode || curNode.RightNode == preNode))){//该节点的左右节点被访问过，用pre记录最后被访问的节点
+                Node node1 = Inn.pop();  //出栈
                 System.out.print(node1.data);
+                System.out.print(" ");
                 preNode = node1;
             }else {
                 if(curNode.RightNode != null){
-                    Queue.push(curNode.RightNode);
+                    Inn.push(curNode.RightNode);  //入栈
                 }
-                if (curNode.LeftNode != null){
-                    Queue.push(curNode.LeftNode);
+                if (curNode.LeftNode != null){   //入栈
+                    Inn.push(curNode.LeftNode);
                 }
             }
         }
@@ -163,6 +170,20 @@ public class Tree {
      * */
     public static void levelOrder(Node node){
 
+        if (node == null)
+            return;
+
+        Queue.enQueue(node);
+
+        while (Queue.getStatus()){   //如果头不等于尾
+            Node node1 = Queue.deQueue();  //出队列
+            System.out.print(node1.data);
+            System.out.print(" ");
+            if(node1.LeftNode != null)
+                Queue.enQueue(node1.LeftNode);  //入队列
+            if(node1.RightNode != null)
+                Queue.enQueue(node1.RightNode);   //入队列
+        }
     }
 
     public static void main(String[] args) {
@@ -180,6 +201,9 @@ public class Tree {
         System.out.println("后续遍历");
         postOrderRecursion(node);
         postOrder(node);
+        System.out.println();
+        System.out.println("层序遍历");
+        levelOrder(node);
     }
 }
 

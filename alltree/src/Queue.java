@@ -1,43 +1,37 @@
-
-
 /**
  * @program: dinghe-arithmetic
  * @description:
  * @author: wl.ding
- * @create: 2020-12-07 11:45
+ * @create: 2020-12-08 09:30
  **/
-
 public class Queue {
 
-    static  class  queues{   //模拟结构体方便扩展
+    static class queues {   //模拟结构体方便扩展
         static int datas = 100; //队列的主体用来存储内容
-        static int top = 0;  //栈顶
+        static int head = 1;  //队首
+        static int tail = 1; // 队尾
     }
 
-    private static Node[] nodesArr = new Node[queues.datas];
+    static Node[] nodes = new Node[queues.datas]; //初始化存储体大小
 
-    //入栈
-    static Node[] push(Node node){
-        queues.top++;   //栈底0不存数据  所以要先+
-        nodesArr[queues.top] = node;  //从栈顶人栈
-        return nodesArr;
+    public static void enQueue(Node node){
+        //入队
+        nodes[queues.tail] = node;  //从队尾进队列
+        queues.tail++;
     }
 
-    //出栈
-    static Node pop(){
-        Node node1 = nodesArr[queues.top];
-        queues.top--;
-        return node1;
-    }
-
-    //判断是不是top=0
-    static int getTop(){
-        return queues.top;
-    }
-
-    //获取栈顶Node
-    static Node getNode(){
-        Node node = nodesArr[queues.top];
+    public static Node deQueue(){
+        Node node = nodes[queues.head];
+        queues.head++;
         return node;
     }
+
+    public static boolean getStatus(){
+        if(queues.head == queues.tail){
+            return false;
+        }else {
+            return true;
+        }
+    }
+
 }
